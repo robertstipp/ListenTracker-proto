@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click Tracker</title>
+</head>
+
+<body>
+  Click Tracker
+  <button id="btn">CLICK ME</button>
+  <script>
+    const btn = document.getElementById('btn')
+
+    const logEvent = (type) => {
+      fetch('/logClick', {
+        method: 'POST',
+        body: type
+      })
+    }
+    // btn.addEventListener('click', logEvent('click'))
+    document.addEventListener("DOMContentLoaded", (event) => {
+      logEvent('load')
+    });
+
+
+  </script>
+</body>
+
+</html>
