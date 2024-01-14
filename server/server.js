@@ -45,7 +45,7 @@ app.post("/log", (req, res) => {
   };
 
   // Read File
-  let readData = fs.readFile(path.join(__dirname, "./log.json"), {
+  let readData = fs.readFileSync(path.join(__dirname, "./log.json"), {
     encoding: "utf8",
   });
   // Parse File
