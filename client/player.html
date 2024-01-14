@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listener</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      display: grid;
+      place-items: center;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    #mainContent {}
+
+    #pctPlayed {
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="mainContent">
+    <audio id="myAudio" src='/music' controls></audio>
+    <div>
+      <h1>Percentage Played:</h1>
+      <h3 id="pctPlayed">0%</h3>
+
+    </div>
+  </div>
+
+
+  <script>
+    const btn = document.getElementById('btn')
+    const audio = document.getElementById('myAudio')
+    const percentageDisplay = document.getElementById('pctPlayed')
+
+    let complete = false
+    audio.addEventListener('timeupdate', function () {
+      if (complete) return
+      const desired = 3
+
+      let percentagePlayed = 0;
+
+      if (this.duration) {
+        percentagePlayed = (this.currentTime / this.duration) * 100;
+      }
+      percentageDisplay.textContent = percentagePlayed.toFixed(2) + '%'
+      if (percentagePlayed > desired && complete === false) {
+        pctPlayed.innerText = `Challenged Completed`
+        complete = true
+        pctPlayed.style.backgroundColor = 'green'
+        logEvent('listened')
+      }
+    })
+
+    const logEvent = (type) => {
+      const data = { type: type }
+      fetch('/log', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+    }
+  </script>
+</body>
+
+</html>

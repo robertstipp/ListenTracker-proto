@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracking Log</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Tracker</h1>
+  <div id="log"></div>
+
+  <script>
+    const log = document.getElementById('log')
+    async function getData() {
+      const response = await fetch('/log')
+      const data = await response.json()
+      log.innerHTML = JSON.stringify(data)
+    }
+    getData()
+  </script>
+</body>
+
+</html>
