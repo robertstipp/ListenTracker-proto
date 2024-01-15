@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listener</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      display: grid;
+      place-items: center;
+      height: 100vh;
+      width: 100vw;
+      background: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
+      margin: 0;
+      transition: background 10s;
+    }
+
+    #mainContent {
+      height: 90%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #pctPlayed {
+      text-align: center;
+      background: linear-gradient(to right,
+          green,
+          green 0%,
+          red 0%,
+          red);
+    }
+
+    #artContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+
+    #albumArt {
+      width: 60%;
+      height: auto;
+      border-radius: 50%;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="mainContent">
+    <h5>Classic Jazz</h5>
+    <h1>Street Groove</h1>
+    <h2>Ben Stanley</h2>
+    <p><span id="currTime">00:00</span> | <span id="trackDuration">00:00</span></p>
+    <div id="artContainer">
+      <img id="albumArt" src="/albumArt" alt="">
+    </div>
+
+    <audio id="myAudio" src='/music' controls></audio>
+    <div>
+      <h1>Percentage Played:</h1>
+      <h3 id="pctPlayed">0%</h3>
+
+    </div>
+  </div>
+
+
+  <script>
+    const body = document.querySelector('body')
+    const btn = document.getElementById('btn')
+    const audio = document.getElementById('myAudio')
+    const percentageDisplay = document.getElementById('pctPlayed')
+
+    const currTime = document.getElementById('currTime')
+    const trackDuration = document.getElementById('trackDuration')
+
+
+
+    audio.onloadeddata = function () {
+
+      fmtTime(this.duration)
+      trackDuration.innerHTML = fmtTime(this.duration)
+    };
+
+    let complete = false
+    audio.addEventListener('timeupdate', function () {
+      // if (complete) return
+      const desired = 90
+      let percentagePlayed = 0;
+
+      if (this.duration) {
+        percentagePlayed = (this.currentTime / this.duration) * 100;
+      }
+
+      currTime.innerHTML = fmtTime(this.currentTime)
+
+
+      pctPlayed.style.background = `linear-gradient(to right, green, green ${percentagePlayed.toFixed(2)}%, red ${percentagePlayed.toFixed(2)}%, red)`;
+
+      if (complete === false) {
+        percentageDisplay.textContent = percentagePlayed.toFixed(2) + '%'
+      }
+
+      if (percentagePlayed > desired && complete === false) {
+        pctPlayed.innerText = `Challenged Completed`
+        complete = true
+        logEvent('listened')
+      }
+    })
+
+    const logEvent = (type) => {
+      const data = { type: type }
+      fetch('/log', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+    }
+
+    function fmtTime(seconds) {
+      let min = Math.floor(seconds / 60)
+      let sec = Math.floor(seconds % 60)
+      min = min.toString().padStart(2, '0')
+      sec = sec.toString().padStart(2, '0')
+      return `${min}:${sec}`
+    }
+
+    function fmtBg(percentage) {
+
+
+      return
+    }
+  </script>
+</body>
+
+</html>

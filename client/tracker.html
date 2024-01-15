@@ -9,20 +9,40 @@
   <style>
     body {
       font-family: sans-serif;
+      width: 100vw;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #logContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   </style>
 </head>
 
 <body>
   <h1>Tracker</h1>
-  <div id="log"></div>
+  <div id="logContainer"></div>
 
   <script>
-    const log = document.getElementById('log')
+    const logContainer = document.getElementById('logContainer')
     async function getData() {
       const response = await fetch('/log')
-      const data = await response.json()
-      log.innerHTML = JSON.stringify(data)
+      const text = await response.text()
+      const logs = text.split('-')
+      logs.forEach((log, idx) => {
+        const logEntry = document.createElement('p')
+        logEntry.innerHTML = log;
+        logContainer.appendChild(logEntry)
+        // log.appendChild(document.createElement('p').innerText)
+      })
+
+
     }
     getData()
   </script>
