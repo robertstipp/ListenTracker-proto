@@ -2,13 +2,16 @@
 <html lang="en">
 
 <head>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-WRHTPNBS');</script>
-    <!-- End Google Tag Manager -->
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-WRHTPNBS');</script>
+  <!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listener</title>
@@ -46,30 +49,55 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
+    #trackInfo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
 
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    h3 {
+      margin-top: 0px;
+    }
+
+    #dial {
+      position: absolute;
+      z-index: -99;
+    }
 
     #albumArt {
       width: 60%;
       height: auto;
       border-radius: 50%;
       display: block;
+
     }
   </style>
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRHTPNBS"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRHTPNBS" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
   <div id="mainContent">
     <h5>Classic Jazz</h5>
-    <h1>Street Groove</h1>
-    <h2>Ben Stanley</h2>
+    <div id="trackInfo">
+      <h1>Street Groove</h1>
+      <h3>Ben Stanley</h3>
+    </div>
+
     <p><span id="currTime">00:00</span> | <span id="trackDuration">00:00</span></p>
     <div id="artContainer">
+
       <img id="albumArt" src="/albumArt" alt="">
     </div>
 
@@ -77,10 +105,11 @@
     <div>
       <h1>Percentage Played:</h1>
       <h3 id="pctPlayed">0%</h3>
-
     </div>
+
   </div>
 
+  <canvas width="900px" height="900px" style="position: absolute; z-index: -999;"></canvas>
 
   <script>
     const body = document.querySelector('body')
@@ -88,13 +117,13 @@
     const audio = document.getElementById('myAudio')
     const percentageDisplay = document.getElementById('pctPlayed')
 
+    const albumArt = document.getElementById('albumArt')
+
     const currTime = document.getElementById('currTime')
     const trackDuration = document.getElementById('trackDuration')
 
 
-
     audio.onloadeddata = function () {
-
       fmtTime(this.duration)
       trackDuration.innerHTML = fmtTime(this.duration)
     };
@@ -104,15 +133,14 @@
       // if (complete) return
       const desired = 90
       let percentagePlayed = 0;
-
       if (this.duration) {
         percentagePlayed = (this.currentTime / this.duration) * 100;
       }
-
       currTime.innerHTML = fmtTime(this.currentTime)
-
-
       pctPlayed.style.background = `linear-gradient(to right, green, green ${percentagePlayed.toFixed(2)}%, red ${percentagePlayed.toFixed(2)}%, red)`;
+
+
+
 
       if (complete === false) {
         percentageDisplay.textContent = percentagePlayed.toFixed(2) + '%'
@@ -142,11 +170,7 @@
       return `${min}:${sec}`
     }
 
-    function fmtBg(percentage) {
 
-
-      return
-    }
   </script>
 </body>
 
